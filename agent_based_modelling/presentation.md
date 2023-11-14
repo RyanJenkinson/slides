@@ -41,6 +41,11 @@ lessons from modelling the GB target of 600,000 heat pumps by 2028 using an ABM
 
 📌 **Goal:** _what combination of policy interventions are required to meet the UK target of 600,000 HPs by 2028?_
 
+<!-- 
+* This was the main question we were answering
+* As you can see, it defines a clear metric we were able to use our ABM to answer, which was important
+ -->
+
 ---
 
 # Agenda
@@ -65,6 +70,11 @@ lessons from modelling the GB target of 600,000 heat pumps by 2028 using an ABM
 
 ![width:700px](https://organizationalphysics.com/wp-content/uploads/2016/09/Top-down-hierarchy-vs-bottom-up-design-1024x530.png)
 
+<!-- 
+* Most models are top down (they model whole regions / areas as one "object")
+* ABMs are bottom up - the "unit" is a household, and we define the rules of the game and "aggregate up" to see how the entire system behaves
+ -->
+
 ---
 
 # An agent based model needs
@@ -82,6 +92,13 @@ At each timestep, the environment evolves according to the rules, and the agents
 ### Our approach centred on households as the key decision maker
 
 ![width:900px](./figures/abm_diagram.png)
+
+<!-- 
+* In our research households and household-environment interactions were most common
+* But in the future, you _could_ have agent-agent interactions (e.g you are more likely to buy a gas boiler because your neighbour has one). Research suggested this wasn't the case, so isnt in our model, but could be added.
+* Environment contains things like prices, installer availability, policy interventions like subsidies
+* Agents contain information about the household, what heating systems they know about etc
+ -->
 
 ---
 
@@ -167,6 +184,10 @@ We made assumptions globally about how the "world model" evolved. These were par
 </div>
 </div>
 
+<!-- 
+* This was quite parallelisable, we could set several simulations running in parallel and change these parameters as needed via a CLI.
+-->
+
 ---
 
 ![bg 40%](./figures/code_vs_high_level_description.png)
@@ -202,6 +223,10 @@ We made assumptions globally about how the "world model" evolved. These were par
 * Sensitivity analysis (see later)
 * Run a notebook of graphs to check results against scenarios
 
+<!-- 
+* Adding lots of behaviours can get complicated. If you want behaviour A then add a feature for behaviour B. How do you know you haven't broken behaviour A? We had tests in python to test we didnt break anything, and tested desired outcomes rather than explicit unit tests (e.g if the prices were extremely high, no one would buy that heating system) rather than asserting on probabilities)
+ -->
+
 ---
 
 ![bg right:55% 95%](figures/sensitivity_tornado.png)
@@ -217,11 +242,24 @@ We made assumptions globally about how the "world model" evolved. These were par
 Show that you can recreate a historical dataset with default parameters. We used RHI uptake from 2010 - 2021.
 ![bg right:45% 90%](figures/model_calibration.png)
 
+<!-- 
+This shows that your rule based bottom-up approach can emulate a top-level view
+* Then - <big assumption> - you assume purchasing behaiour doesnt change and simulate the future
+* Was popular for covid modelling
+* We felt this was OK since we were simulating "near term" e.g out to ~2035.
+* But Russia-Ukraine, inflation etc might lead to a fundamentally different purchasing behaviour now compared to when we built our model.
+ -->
+
 ---
 
 #### Scenarios were agreed with our policy team
 
 ![width:800px](./figures/scenarios.png)
+
+<!-- 
+* Based on things that government was thinking about at the time and we felt likely to happen
+* Up to scenarios that might be more ambitious
+ -->
 
 ---
 
@@ -254,17 +292,39 @@ table {
 
 ![bg 90%](./figures/finding_1.png)
 
+<!-- 
+* During BUS costs of heating system falls (because of subsidy)
+* Post-BUS, due to learning rates, system costs are slightly higher than when there is a subsidy, but lower than pre-BUS
+* We shows that during the BUS the average property price of households buying that heating system (proportional to welfare of house) was lower on average, meaning less affluent households could buy this technology
+ -->
+
 ---
 
 ![bg 90%](./figures/finding_1_cont.png)
+
+<!-- 
+* This is shown here in this locational map too
+ -->
 
 ---
 
 ![bg 90%](./figures/finding_2.png)
 
+<!-- 
+* Our model prioritised new build installs over existing build installs (under hypothesis it would be easier to install in a new build), but this shows there might be constraints on installers if we cannot grow the base fast enough
+* An existing-build heat pump was only installed if there was an installer available
+* Limitation: national availability not regional availability!
+ -->
+
 ---
 
 ![bg 90%](./figures/finding_3.png)
+
+<!-- 
+* Some scenarios get us there!
+* These scenarios tend to involve a ban, which we assumed increase awareness dramatically, which we know our model is sensitive to.
+* Still, customers would only choose to get it if they could afford it (we weren't "ripping out" existing boilers) and was still proportional to the cost of the system (so more likely to get a boiler over a HP)
+ -->
 
 ---
 
@@ -288,7 +348,9 @@ section {
 
 * Everything you add to the model is an assumption. **Add as little as possible**, because you'll have to justify everything and you want a model you can explain. You _can_ have too many things going on.
 * Writing ABM code is easy. Knowing what to add and running it at scale is hard. **Stand on the shoulders of giants, using data and techniques that already exist**.
+* Orient yourself around a key question: what do you want to answer? What do you want to test?
 * **Sensitivity analysis** is key towards seeing what would swing the output. Only focus on the big stuff (both inputs & outputs of a model).
+* <Probably more stuff here!>
 
 ---
 
